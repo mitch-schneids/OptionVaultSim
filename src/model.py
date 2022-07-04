@@ -14,10 +14,11 @@ from cadCAD.engine import Executor
 def generate_params():
     params = {}
 
-    params['fee_dov'] = [random.uniform(0.05, 0.22)],
-    params['fee_agg'] = [random.uniform(0.01, 0.05)],
+    params['fee_dov'] = [random.uniform(0.05, 0.22)]
+    params['fee_agg'] = [random.uniform(0.01, 0.05)]
     params['premium_rate'] = [random.uniform(0.01, 0.05)]
     
+    return params
 
 def main():
     filename = 'res/eth-usd.xlsx'
@@ -48,7 +49,7 @@ def main():
                 'expired' : False
             }
 
-            PSUBs = [
+            PSUBs = {
                 'agg_state' : {
                     'policies' : {},
                     'variables' : {
@@ -77,7 +78,7 @@ def main():
                         's_fee_dov' : su.s_fee_dov
                     }
                 }
-            ]
+            }
 
 
         pd.options.plotting.backend = 'plotly'
@@ -85,11 +86,12 @@ def main():
         MONTE_CARLO_RUNS = 50
         SIMULATION_TIMESTEPS = 500
 
+        print(params)
         sim_config = config_sim(
             {
-            'N': 1,
+            'N': MONTE_CARLO_RUNS,
             'T': range(SIMULATION_TIMESTEPS),
-            'M': generate_params
+            'M': params
             }
         )
 
@@ -98,7 +100,7 @@ def main():
         exp.append_configs(
             initial_state = genesis_states, 
             partial_state_update_blocks = PSUBs, 
-            sim_configs = params
+            sim_configs = sim_config
 
         )
         # Execution
