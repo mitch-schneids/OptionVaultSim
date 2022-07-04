@@ -11,7 +11,7 @@ def s_deposit_agg(params, substep, state_history, previous_state, policy_input):
     value = previous_state['eth_supply'] * previous_state['init_eth_price']
     fee = value * params['fee_agg']
 
-    agg_quantity = fee /  previous_state['eth_price']
+    agg_quantity = fee /  previous_state['init_eth_price']
 
     return 'agg_quantity', agg_quantity
 
